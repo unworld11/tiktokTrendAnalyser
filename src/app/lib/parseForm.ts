@@ -47,7 +47,8 @@ export const parseForm = async (request: Request) => {
       const buffer = Buffer.from(arrayBuffer);
       
       // Create a custom IncomingMessage-like object that formidable can work with
-      const customReq = new IncomingMessage(null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const customReq = new IncomingMessage({} as any);
       
       // Add necessary properties to mimic a proper request object
       Object.defineProperties(customReq, {

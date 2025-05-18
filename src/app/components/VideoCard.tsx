@@ -5,13 +5,13 @@ import { getImageUrl, type TikTokImageData } from '../lib/tiktokUtils';
 type Video = {
   desc?: string;
   statistics?: {
-    digg_count: number;
-    comment_count: number;
-    share_count: number;
-    play_count: number;
+    digg_count?: number;
+    comment_count?: number;
+    share_count?: number;
+    play_count?: number;
   };
   author?: {
-    nickname: string;
+    nickname?: string;
   };
   video?: {
     cover?: TikTokImageData;

@@ -206,7 +206,8 @@ export async function transcribeAudio(audioBuffer: Buffer, fileName: string, vid
         onScreenText,
         keywords,
       };
-    } catch (apiError: Error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (apiError: any) {
       console.error('API Error in transcription:', apiError);
       
       // Clean up the temporary file on error too
