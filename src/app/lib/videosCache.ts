@@ -1,5 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import { supabase } from './supabaseClient'; // Import Supabase client
+// import fs from 'fs'; // No longer needed for disk operations
+// import path from 'path'; // No longer needed for disk operations
 
 type Video = {
   id?: string;
@@ -33,36 +34,56 @@ export function getVideosCache(): Video[] {
 }
 
 // Update the videos cache
-export function updateVideosCache(videos: Video[]): void {
+export async function updateVideosCache(videos: Video[]): Promise<void> {
   cachedVideos = videos;
   
-  // Also save to disk for persistence between server restarts
+  const filePath = 'data/videos.json'; // Path within the bucket
   try {
-    const dataDir = path.join(process.cwd(), 'public', 'data');
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
+    const { error } = await supabase.storage
+      .from('temporary_files')
+      .upload(filePath, JSON.stringify({ videos }, null, 2), {
+        contentType: 'application/json',
+        upsert: true, // Create or update if exists
+      });
+
+    if (error) {
+      console.error('Error saving videos to Supabase Storage:', error);
+      throw error;
     }
-    
-    const videosFilePath = path.join(dataDir, 'videos.json');
-    fs.writeFileSync(videosFilePath, JSON.stringify({ videos }, null, 2));
+    console.log('Videos saved to Supabase Storage successfully.');
   } catch (error) {
-    console.error('Error saving videos to disk:', error);
+    console.error('Error in updateVideosCache during Supabase operation:', error);
   }
 }
 
-// Load videos from disk file
-export function loadVideosFromDisk(): Video[] {
+// Renamed from loadVideosFromDisk
+export async function loadVideosFromSupabase(): Promise<Video[]> {
+  const filePath = 'data/videos.json'; // Path within the bucket
   try {
-    const videosFilePath = path.join(process.cwd(), 'public', 'data', 'videos.json');
-    
-    if (fs.existsSync(videosFilePath)) {
-      const videosData = JSON.parse(fs.readFileSync(videosFilePath, 'utf-8'));
+    const { data, error } = await supabase.storage
+      .from('temporary_files')
+      .download(filePath);
+
+    if (error) {
+      if (error.message.includes('The resource was not found')) {
+        console.log('videos.json not found in Supabase Storage, returning empty array.');
+        cachedVideos = [];
+        return [];
+      }
+      console.error('Error downloading videos from Supabase Storage:', error);
+      throw error;
+    }
+
+    if (data) {
+      const videosData = JSON.parse(await data.text());
       cachedVideos = videosData.videos || [];
+      console.log('Videos loaded from Supabase Storage successfully.');
       return cachedVideos;
     }
   } catch (error) {
-    console.error('Error reading videos file:', error);
+    console.error('Error in loadVideosFromSupabase:', error);
   }
   
+  cachedVideos = []; // Ensure cache is cleared if there's an issue
   return [];
 } 

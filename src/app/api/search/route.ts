@@ -4,7 +4,7 @@ import { processTikTokVideos } from '../../lib/tiktokUtils';
 import { updateVideosCache } from '../../lib/videosCache';
 
 // Environment flag to enable/disable real API calls
-const USE_REAL_API = process.env.USE_REAL_API === 'true';
+const USE_REAL_API = 'true';
 
 export async function POST(request: Request) {
   try {
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
         share_count: video.statistics.shareCount,
       }
     }));
-    updateVideosCache(videosToCache);
+    await updateVideosCache(videosToCache);
 
     return NextResponse.json({ videos });
   } catch (error) {

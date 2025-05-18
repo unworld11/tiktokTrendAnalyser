@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { extractAudioFromVideo, extractVideoUrl } from '../../lib/audioExtractor';
 import { transcribeAudio } from '../../lib/transcription';
-import fs from 'fs';
-import path from 'path';
+import { supabase } from '../../lib/supabaseClient';
 
 export async function POST(request: Request) {
   try {
@@ -46,6 +45,27 @@ export async function POST(request: Request) {
       
       // Generate a name for the audio file
       const fileName = `tiktok_${videoId}.mp3`;
+      const audioFilePathInBucket = `audio/${fileName}`;
+
+      // Upload audio to Supabase
+      const { error: audioUploadError } = await supabase.storage
+        .from('temporary_files')
+        .upload(audioFilePathInBucket, audioBuffer, {
+          contentType: 'audio/mpeg',
+          upsert: true,
+        });
+
+      if (audioUploadError) {
+        console.error('Error uploading audio to Supabase:', audioUploadError);
+        return NextResponse.json(
+          { 
+            error: 'Failed to upload audio to Supabase',
+            details: audioUploadError.message
+          },
+          { status: 500 }
+        );
+      }
+      console.log(`Audio ${fileName} uploaded to Supabase at ${audioFilePathInBucket}`);
       
       try {
         // Process the audio transcription
@@ -55,15 +75,19 @@ export async function POST(request: Request) {
           videoId
         );
         
-        // Create directory for storing transcriptions if it doesn't exist
-        const transcriptionDir = path.join(process.cwd(), 'public', 'transcriptions');
-        if (!fs.existsSync(transcriptionDir)) {
-          fs.mkdirSync(transcriptionDir, { recursive: true });
+        // Save the transcription result to Supabase
+        const transcriptionPathInBucket = `transcriptions/${videoId}.json`;
+        const { error: transcriptionUploadError } = await supabase.storage
+          .from('temporary_files')
+          .upload(transcriptionPathInBucket, JSON.stringify(transcriptionResult, null, 2), {
+            contentType: 'application/json',
+            upsert: true,
+          });
+
+        if (transcriptionUploadError) {
+          console.error('Error uploading transcription to Supabase:', transcriptionUploadError);
+          // Decide if you want to throw or just log. For now, let the request succeed if transcription upload fails but audio was fine.
         }
-        
-        // Save the transcription result to a file
-        const transcriptionPath = path.join(transcriptionDir, `${videoId}.json`);
-        fs.writeFileSync(transcriptionPath, JSON.stringify(transcriptionResult, null, 2));
         
         // Return the transcription result
         return NextResponse.json({

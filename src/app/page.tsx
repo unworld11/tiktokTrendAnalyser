@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 import SearchForm from './components/SearchForm';
 import VideoCard from './components/VideoCard';
 import Dashboard from './components/Dashboard';
@@ -42,6 +44,9 @@ type SearchParams = {
 };
 
 export default function Home() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
   const [videos, setVideos] = useState<Video[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
