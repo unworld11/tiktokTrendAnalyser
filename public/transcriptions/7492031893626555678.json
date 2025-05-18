@@ -1,0 +1,40 @@
+{
+  "transcript": "Once ozempic is in your bloodstream, it activates the parts of the brain that make you feel full, reducing your appetite. It also stabilizes your blood sugar, stopping sudden cravings. Then, it slows down how fast your stomach empties food, which keeps you feeling full for longer after a meal. This causes you to lose weight as you eat less, but it can make some people feel sick and even give them diarrhea.",
+  "textSegments": [
+    {
+      "text": "Once ozempic is in your bloodstream, it activates the parts of the brain that make you feel full, reducing your appetite.",
+      "startTime": 0,
+      "endTime": 4.5,
+      "keywords": [
+        "ozempic"
+      ]
+    },
+    {
+      "text": "It also stabilizes your blood sugar, stopping sudden cravings.",
+      "startTime": 5,
+      "endTime": 9.5,
+      "keywords": []
+    },
+    {
+      "text": "Then, it slows down how fast your stomach empties food, which keeps you feeling full for longer after a meal.",
+      "startTime": 10,
+      "endTime": 14.5,
+      "keywords": []
+    },
+    {
+      "text": "This causes you to lose weight as you eat less, but it can make some people feel sick and even give them diarrhea.",
+      "startTime": 15,
+      "endTime": 19.5,
+      "keywords": []
+    }
+  ],
+  "onScreenText": [
+    "#ozempic",
+    "#weightlossjourney",
+    "#realresults",
+    "Follow for more health tips"
+  ],
+  "keywords": [
+    "ozempic"
+  ]
+}
