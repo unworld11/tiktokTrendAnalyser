@@ -111,7 +111,7 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="w-full grid grid-cols-1 lg:grid-cols-2 lg:items-start">
+            <div className="w-full grid grid-cols-1 lg:grid-cols-1 lg:items-start">
               {/* Sidebar with Videos */}
               {/* Main Content */}
               <div className={`w-full min-w-0 lg:col-span-${videos.length > 0 ? '9' : '12'} space-y-6`}>

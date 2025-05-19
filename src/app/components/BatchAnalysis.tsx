@@ -576,7 +576,17 @@ export default function BatchAnalysis({ videos = [] }: BatchAnalysisProps) {
 
         {activeTab === 'clusters' && (
           <div className="w-full mt-6">
-            <SemanticClustering videos={videos} selectedCluster={selectedCluster} onSelectCluster={setSelectedCluster} />
+            <SemanticClustering 
+              videos={videos} 
+              geminiResults={results
+                .filter(r => r && !r.error)
+                .map(r => ({
+                  videoId: r.videoId,
+                  result: r.result
+                }))}
+              selectedCluster={selectedCluster} 
+              onSelectCluster={setSelectedCluster} 
+            />
           </div>
         )}
       </div>
