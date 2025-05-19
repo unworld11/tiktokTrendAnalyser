@@ -3,9 +3,23 @@ import { useState, useEffect } from 'react';
 type Video = {
   id?: string;
   aweme_id?: string;
-  transcriptData?: {
-    transcript: string;
-    keywords: string[];
+  desc?: string;
+  video?: {
+    cover?: {
+      url_list?: string[];
+    };
+    origin_cover?: {
+      url_list?: string[];
+    };
+  };
+  author?: {
+    nickname?: string;
+  };
+  statistics?: {
+    digg_count?: number;
+    comment_count?: number;
+    play_count?: number;
+    share_count?: number;
   };
 };
 
@@ -108,6 +122,11 @@ export default function SemanticClustering({
       </div>
       
       <div className="p-6">
+        <div className="mb-4 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-md">
+          <h3 className="text-sm font-medium mb-1">About Semantic Clustering</h3>
+          <p>Videos are semantically clustered based on content and on-screen text.</p>
+        </div>
+        
         {loading ? (
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>

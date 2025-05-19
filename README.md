@@ -1,111 +1,44 @@
 # TikTok Semantics
 
-A tool for semantic analysis of TikTok videos, including transcript analysis, keyword extraction, and semantic clustering.
+A tool for semantic analysis of TikTok videos, including keyword extraction, semantic clustering, and content analysis with Google Gemini AI.
 
 ## Features
 
-- Search TikTok videos by keywords
-- Semantic analysis dashboard
-- Semantic clustering of videos
-- Transcript analysis with OpenAI Whisper
-- Automatic audio extraction from TikTok videos
+- TikTok video search by keywords, hashtags, users, and trends
+- Video metadata extraction
+- Semantic analysis with Google Gemini AI
+- Semantic clustering of videos based on content
+- Batch processing for analyzing multiple videos
+- Interactive visualizations of semantic patterns
 
-## Prerequisites
+## Requirements
 
-- Node.js 18+
-- FFmpeg for automatic audio extraction
-- OpenAI API key for Whisper transcription
+- Node.js 16+ and npm/yarn
+- Google Gemini API key for video analysis
+- Apify integration for TikTok data scraping
 
-## Installation
+## Getting Started
 
 1. Clone the repository
-2. Install dependencies
-
-```bash
-npm install
+2. Install dependencies with `npm install`
+3. Create a `.env` file with the following variables:
 ```
+# Apify API Key (required for TikTok data scraping)
+APIFY_API_KEY=your_apify_key
 
-3. Install FFmpeg (required for automatic audio extraction)
-
-**macOS (using Homebrew):**
-```bash
-brew install ffmpeg
+# Google Gemini API Key (required for video analysis)
+GOOGLE_API_KEY=your_google_api_key
 ```
-
-**Ubuntu/Debian:**
-```bash
-sudo apt update
-sudo apt install ffmpeg
-```
-
-**Windows:**
-Download from [ffmpeg.org](https://ffmpeg.org/download.html) or install with [Chocolatey](https://chocolatey.org/):
-```bash
-choco install ffmpeg
-```
-
-4. Create a `.env.local` file in the root directory with your OpenAI API key:
-
-```
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-5. Start the development server:
-
-```bash
-npm run dev
-```
-
-The application will be available at http://localhost:3000
+4. Start the development server with `npm run dev`
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Usage
 
-1. Search for TikTok videos using keywords
-2. Select a video to analyze
-3. Navigate to the "Transcript Analysis" tab
-4. Choose either:
-   - Automatic extraction: The system will download the video, extract audio, and transcribe it
-   - Manual upload: Upload your own audio file from the TikTok video
-
-## Technology Stack
-
-- Next.js 15
-- React 19
-- OpenAI Whisper API
-- FFmpeg for audio extraction
-- Tailwind CSS
-
-## Apify Integration
-
-This project integrates with the [Apify](https://apify.com) platform to fetch TikTok data. We use the [novi/fast-tiktok-scraper](https://apify.com/novi/fast-tiktok-scraper) Actor to extract video data.
-
-### Configuration
-
-1. Sign up for an Apify account at [https://apify.com/](https://apify.com/)
-2. Obtain your API token from the Apify dashboard
-3. Add your token to the `.env.local` file:
-   ```
-   NEXT_PUBLIC_APIFY_TOKEN=your_apify_token
-   ```
-4. To use the actual Apify API (costs may apply), set:
-   ```
-   USE_REAL_API=true
-   ```
-
-### Usage Example
-
-```javascript
-import { searchTikTokVideos } from './lib/apify';
-
-// Search for TikTok videos
-const videos = await searchTikTokVideos({
-  type: 'SEARCH',
-  region: 'US',
-  keywords: ['health', 'wellness'],
-  maxItems: 20
-});
-```
+1. Enter search parameters in the Search Form (keywords, hashtags, etc.)
+2. Click "Search" to fetch TikTok videos matching your criteria
+3. Navigate to the "Batch Analysis" tab to process videos with Gemini AI
+4. Explore semantic patterns in the "Semantic Dashboard" tab
 
 ## License
 
-This project is proprietary and confidential.
+MIT

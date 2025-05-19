@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getVideosCache, loadVideosFromSupabase } from '../../lib/videosCache';
+import { getVideosCache, loadVideosFromCache } from '../../lib/videosCache';
 
 export async function GET() {
   try {
@@ -9,8 +9,8 @@ export async function GET() {
       return NextResponse.json({ videos });
     }
     
-    // Try to load from Supabase
-    videos = await loadVideosFromSupabase();
+    // Try to load from memory cache
+    videos = await loadVideosFromCache();
     if (videos.length > 0) {
       return NextResponse.json({ videos });
     }

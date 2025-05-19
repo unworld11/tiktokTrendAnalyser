@@ -1,6 +1,4 @@
-import { supabase } from './supabaseClient'; // Import Supabase client
-// import fs from 'fs'; // No longer needed for disk operations
-// import path from 'path'; // No longer needed for disk operations
+// We now only use in-memory cache since we're directly analyzing video URLs
 
 type Video = {
   id?: string;
@@ -36,54 +34,10 @@ export function getVideosCache(): Video[] {
 // Update the videos cache
 export async function updateVideosCache(videos: Video[]): Promise<void> {
   cachedVideos = videos;
-  
-  const filePath = 'data/videos.json'; // Path within the bucket
-  try {
-    const { error } = await supabase.storage
-      .from('temporary_files')
-      .upload(filePath, JSON.stringify({ videos }, null, 2), {
-        contentType: 'application/json',
-        upsert: true, // Create or update if exists
-      });
-
-    if (error) {
-      console.error('Error saving videos to Supabase Storage:', error);
-      throw error;
-    }
-    console.log('Videos saved to Supabase Storage successfully.');
-  } catch (error) {
-    console.error('Error in updateVideosCache during Supabase operation:', error);
-  }
+  console.log('Videos cached in memory successfully.');
 }
 
-// Renamed from loadVideosFromDisk
-export async function loadVideosFromSupabase(): Promise<Video[]> {
-  const filePath = 'data/videos.json'; // Path within the bucket
-  try {
-    const { data, error } = await supabase.storage
-      .from('temporary_files')
-      .download(filePath);
-
-    if (error) {
-      if (error.message.includes('The resource was not found')) {
-        console.log('videos.json not found in Supabase Storage, returning empty array.');
-        cachedVideos = [];
-        return [];
-      }
-      console.error('Error downloading videos from Supabase Storage:', error);
-      throw error;
-    }
-
-    if (data) {
-      const videosData = JSON.parse(await data.text());
-      cachedVideos = videosData.videos || [];
-      console.log('Videos loaded from Supabase Storage successfully.');
-      return cachedVideos;
-    }
-  } catch (error) {
-    console.error('Error in loadVideosFromSupabase:', error);
-  }
-  
-  cachedVideos = []; // Ensure cache is cleared if there's an issue
-  return [];
+// Load videos from cache (for API compatibility)
+export async function loadVideosFromCache(): Promise<Video[]> {
+  return cachedVideos;
 } 
