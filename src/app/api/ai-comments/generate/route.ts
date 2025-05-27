@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     Requirements for the comments:
     1. Make them sound natural and authentic, like real TikTok users would write
     2. Vary the tone and style - some funny, some supportive, some asking questions
-    3. Include appropriate emojis that TikTok users commonly use
+    3. do not use  emojis 
     4. Keep them concise (most TikTok comments are short)
     5. Some should reference specific moments or aspects mentioned in the analysis
     6. Avoid being too formal or robotic
