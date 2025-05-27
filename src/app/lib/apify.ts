@@ -20,6 +20,14 @@ export type TikTokSearchParams = {
   publishTime?: string;
 };
 
+export type TikTokVideoParams = {
+  type: 'VIDEO';
+  urls: string[];
+  limit?: number;
+  isDownloadVideo?: boolean;
+  isDownloadVideoCover?: boolean;
+};
+
 export async function searchTikTokVideos(params: TikTokSearchParams) {
   try {
     console.log('Running Apify actor with params:', params);
@@ -41,6 +49,47 @@ export async function searchTikTokVideos(params: TikTokSearchParams) {
     return items;
   } catch (error) {
     console.error('Error in searchTikTokVideos:', error);
+    throw error;
+  }
+}
+
+// Function to fetch individual video data using the Fast TikTok API
+export async function fetchTikTokVideo(videoUrl: string) {
+  try {
+    console.log('Fetching TikTok video:', videoUrl);
+    
+    // Use the Fast TikTok API actor for individual videos
+    const FAST_API_ACTOR_ID = 'novi/fast-tiktok-api';
+    
+    const params: TikTokVideoParams = {
+      type: 'VIDEO',
+      urls: [videoUrl],
+      limit: 1,
+      isDownloadVideo: true,
+      isDownloadVideoCover: true
+    };
+    
+    // Run the Actor and wait for it to finish
+    const run = await client.actor(FAST_API_ACTOR_ID).call(params);
+    
+    if (!run) {
+      throw new Error('Actor run failed');
+    }
+    
+    console.log(`Actor run succeeded with runId: ${run.id}`);
+    
+    // Fetch results from the dataset
+    const { items } = await client.dataset(run.defaultDatasetId).listItems();
+    
+    if (!items || items.length === 0) {
+      throw new Error('No video data found');
+    }
+    
+    console.log('Retrieved video data successfully');
+    
+    return items[0];
+  } catch (error) {
+    console.error('Error in fetchTikTokVideo:', error);
     throw error;
   }
 }
