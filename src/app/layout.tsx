@@ -28,20 +28,14 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <MaterialIcons />
-        <meta name="color-scheme" content="light dark" />
+        <meta name="color-scheme" content="dark" />
         <meta
           name="theme-color"
-          media="(prefers-color-scheme: light)"
-          content="#f9fafb"
-        />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: dark)"
-          content="#111827"
+          content="#000000"
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-gray-100`}
       >
         <Navigation />
         {children}

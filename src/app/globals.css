@@ -78,3 +78,59 @@ button, a, input, select, textarea {
   vertical-align: middle;
   line-height: 1;
 }
+
+/* TikTok Theme Enhancements */
+/* Custom scrollbar for TikTok theme */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-gray-700::-webkit-scrollbar-thumb {
+  background-color: #374151;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Glow effect for TikTok brand color */
+.tiktok-glow {
+  box-shadow: 0 0 20px rgba(254, 44, 85, 0.3);
+}
+
+.tiktok-glow:hover {
+  box-shadow: 0 0 30px rgba(254, 44, 85, 0.5);
+}
+
+/* Better focus states */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #FE2C55;
+  ring-offset: 2px;
+  ring-offset-color: #000;
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #FE2C55 0%, #FF0050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
